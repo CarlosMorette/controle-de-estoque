@@ -1,8 +1,8 @@
 import tornado.web
 from pathlib import Path
 from jsonschema import validate, exceptions
-from json import load
-
+from json import load, loads
+from bson.json_util import dumps
 
 class AppException(tornado.web.HTTPError):
     pass
@@ -35,3 +35,10 @@ def validate_json_schema(schema, body):
             return validate(body, load(schema_file))
         except exceptions.ValidationError as error:
             return AppException(400, log_message=error.message)
+
+def return_pretty_message(array=None, **kwargs):
+    if not array:
+        return dumps(kwargs)
+    elif not kwargs:
+        return dumps(array)
+    

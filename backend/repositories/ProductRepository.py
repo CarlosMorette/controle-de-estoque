@@ -1,7 +1,7 @@
-from bson.json_util import dumps
-from util.general import PROJECT_BASE_FOLDER, validate_json_schema
+from util.general import PROJECT_BASE_FOLDER, validate_json_schema, return_pretty_message
 from bson import ObjectId
 from json import loads
+
 
 class ProductRepository:
 
@@ -11,11 +11,10 @@ class ProductRepository:
     async def list_products(self):
         products = self.db.products.find({})
         if not products:
-            return dumps({})
+            return return_pretty_message({})
 
         products = await products.to_list(length=10)
-        return dumps(products)
-
+        return return_pretty_message(products)
 
     def insert_product(self, body):
         schema_for_validate = f"{PROJECT_BASE_FOLDER}/schemas/products/post_product.json"
@@ -32,19 +31,18 @@ class ProductRepository:
 
             self.db.products.insert_one(new_product)
 
-            return dumps({"success": "ok"})
+            return return_pretty_message(success="ok")
         else:
-            return dumps({"error": str(validation)})
+            return return_pretty_message(error=str(validation))
 
     async def list_by_id(self, id_product):
-        try:        
-            product_for_update = await self.db.products.find_one({
+        try:
+            product = await self.db.products.find_one({
                 "_id": ObjectId(id_product)
             })
-
-            return dumps(product_for_update)
+            return return_pretty_message(product)
         except Exception:
-            return dumps({"error": "produto não encontrado"})
+            return return_pretty_message(error="produto nao encontrado")
 
     async def update_product(self, body):
         id_product = body["id"]
@@ -54,28 +52,40 @@ class ProductRepository:
         validity = body["validity"]
         category = body["category"]
 
+        product = await self.list_by_id(id_product)
+
         try:
-            self.db.products.update_one(
-            { "_id": ObjectId(id_product)},
-            {
-                "$set": {
-                    "name": name,
-                    "price": price,
-                    "validity": validity,
-                    "category": category
-                }
-            })
-            return dumps({"success": "ok"})
+            if not "_id" in product:
+                return return_pretty_message(error=f"produto id:{id_product} não encontrado")
+            else:
+                self.db.products.update_one(
+                    {"_id": ObjectId(id_product)},
+                    {
+                        "$set": {
+                            "name": name,
+                            "price": price,
+                            "validity": validity,
+                            "category": category
+                        }
+                    })
+                return return_pretty_message(success="ok", id_atualizado=id_product)
         except Exception:
-            return dumps({"error": "falha ao atualizar"})
+            return return_pretty_message(error="falha ao atualizar")
 
     async def remove_product(self, body):
         id_product = body["id"]
+        product = await self.list_by_id(id_product)
 
-        # try:
-        self.db.products.delete_one({
-                "_id": ObjectId(id_product)
-            })
-        return dumps({"success": "ok"})
-        # except Exception:
-        #     return dumps({"error": "falha ao excluir"})
+        product_object = loads(product)
+
+        try:
+            if not "_id" in product_object:
+                return return_pretty_message(error=f"produto id:{id_product} não encontrado")
+            else:
+                self.db.products.delete_one({
+                    "_id": ObjectId(id_product)
+                })
+
+            return return_pretty_message(success="ok", id_excluido=id_product)
+        except Exception:
+            return return_pretty_message(error="falha ao excluir")
