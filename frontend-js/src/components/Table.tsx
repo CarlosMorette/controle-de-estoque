@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TableProps } from '../constants/Interfaces'
 import styles from './../css/components/table.module.css'
 
 export default function Table(props: TableProps){
 
-    const createColumns = (props.columns.map(c => <th>{c}</th>))
+    const [rowSelected, setRowSelected] = useState()
+
+    const createColumns = (props.columns.map((c, i) => <th key={i}>{c}</th>))
     
     const createBody = (
-        props.data.map(d => {
+        props.data.map((d, i) => {
             return (
-                <tr>
-                    {Object.values(d).map(a => <td>{a}</td>)}
+                <tr key={i} onClick={(e: any) => {
+                    console.log(e.target.parentElement.children)
+                    setRowSelected(e.target.parentElement.children)
+                }
+                }>
+                    {Object.values(d).map((a, i) => <td key={i}>{a}</td>)}
                 </tr>
             )
         })

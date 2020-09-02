@@ -4,48 +4,47 @@ import { Product } from '../constants/Interfaces'
 import { requestApi } from '../constants/Functions'
 import Table from '../components/Table'
 
-export default function Home(){
+export default function Home() {
 
-  const [products, setProducts] = useState<Product[]>([])
-  const columnsTable = [
+    const [products, setProducts] = useState<Product[]>([])
+    const [rowSelected, setRowSelected] = useState<Product | null>(null)
 
-  ]
+    const createObjectData = (array: Product[]) => {
+        const newArray: Product | any = []
+        array.map(o => {
+            const { name, price, validity, category } = o
+            const newObject = {
+                name,
+                price,
+                validity: String(validity),
+                category
+            }
+            newArray.push(newObject)
+        })
+    
+        return newArray
+    }
 
-  const request = async () => {
-    const data = await requestApi("GET", "produto")
-    setProducts(data)
-  }
+    const getProducts = async () => {
+        const data = await requestApi("GET", "produto")
+        const arrayProducts = createObjectData(data)
+        setProducts(arrayProducts)
+    }
 
-  useEffect(() => {
-    request()
-  },[])
 
-  return (
-    <div>
-      <Header />
-      <div>
-        <Table 
-          columns={["Nome", "Preço", "Validade", "Categoria"]}
-          data={[{
-            name: "Osvaldo",
-            category: "carboidratos",
-            price: "123",
-            validity: String(true)
-          },
-          {
-            name: "Osvaldo",
-            category: "carboidratos",
-            price: "123",
-            validity: String(true)
-          },
-          {
-            name: "Osvaldo",
-            category: "carboidratos",
-            price: "123",
-            validity: String(true)
-          }]}
-        />
-      </div>
-    </div>
-  )
+    useEffect(() => {
+        getProducts()
+    })
+
+    return (
+        <div>
+            <Header />
+            <div>
+                <Table
+                    columns={["Nome", "Preço", "Validade", "Categoria"]}
+                    data={products}
+                />
+            </div>
+        </div>
+    )
 }

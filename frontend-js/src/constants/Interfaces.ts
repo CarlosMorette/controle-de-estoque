@@ -6,6 +6,7 @@ export interface Route {
 
 // State
 export interface Product {
+    id?: any
     name: string,
     price: string,
     validity: boolean | string,
