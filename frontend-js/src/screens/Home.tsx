@@ -31,7 +31,6 @@ export default function Home() {
         setProducts(arrayProducts)
     }
 
-
     useEffect(() => {
         getProducts()
     })
@@ -43,6 +42,15 @@ export default function Home() {
                 <Table
                     columns={["Nome", "Preço", "Validade", "Categoria"]}
                     data={products}
+                    callback={(row: any) => {
+                        setRowSelected({ 
+                            name: row[0].textContent,
+                            price: row[1].textContent,
+                            validity: row[2].textContent,
+                            category: row[3].textContent,
+                        })
+                        console.log(rowSelected)
+                    }}
                 />
             </div>
         </div>

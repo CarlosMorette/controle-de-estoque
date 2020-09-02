@@ -6,7 +6,11 @@
     border-bottom: 1px solid #2A2E32
 }
 
-.table  tr {
-    height: 30px;
+.table tr {
+    height: 50px;
     text-align: center;
+}
+
+.table tr td {
+    border-bottom: 1px solid #F0F0F0;
 }
