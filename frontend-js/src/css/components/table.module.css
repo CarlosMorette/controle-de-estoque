@@ -1,0 +1,12 @@
+.table {
+    width: 100%;
+}
+
+.table thead tr th {
+    border-bottom: 1px solid #2A2E32
+}
+
+.table  tr {
+    height: 30px;
+    text-align: center;
+}

@@ -1,5 +1,6 @@
-import { Route } from './../Constants/Interfaces'
+import { Route } from './../constants/Interfaces'
 import Home from './../screens/Home'
+import NotFound from './../screens/NotFound'
 
 const routesPages: Route[] = [
     {
@@ -9,4 +10,9 @@ const routesPages: Route[] = [
     }
 ]
 
-export { routesPages }
+const notFound = {
+    name: "NotFound",
+    component: NotFound
+}
+
+export { routesPages, notFound }
