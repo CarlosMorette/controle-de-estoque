@@ -29,5 +29,6 @@ export interface TableProps {
     columns: Array<string>
     data: Array<Product>
     rowDataSelected?: any
-    action?: any
+    action?: boolean
+    modal: (modal: boolean) => void
 }

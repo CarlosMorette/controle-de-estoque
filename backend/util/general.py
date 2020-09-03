@@ -53,9 +53,9 @@ def validate_json_schema(schema, body):
         except exceptions.ValidationError as error:
             return AppException(400, log_message=error.message)
 
+
 def return_pretty_message(array=None, **kwargs):
     if not array:
         return dumps(kwargs)
     elif not kwargs:
         return dumps(array)
-    

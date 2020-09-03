@@ -13,13 +13,12 @@ class ProductRepository:
         products = await self.mongoObject.list_data()
         return return_pretty_message(products)
 
-
-    def insert_product(self, body):
+    async def insert_product(self, body):
         schema_for_validate = f"{PROJECT_BASE_FOLDER}/schemas/products/post_product.json"
 
         validation = validate_json_schema(schema_for_validate, body)
 
-        try: 
+        try:
             if validation is None:
                 new_product = {
                     "name": body["name"],
@@ -28,11 +27,10 @@ class ProductRepository:
                     "category": body["category"]
                 }
 
-                self.mongoObject.insert_data(new_product)
-                return return_pretty_message(success="ok")
+                await self.mongoObject.insert_data(new_product)
+            return return_pretty_message(success="ok")
         except Exception:
             return return_pretty_message(error=str(validation))
-
 
     async def list_by_id(self, id_product):
         try:
@@ -40,7 +38,6 @@ class ProductRepository:
             return return_pretty_message(product)
         except Exception:
             return return_pretty_message(error="produto nao encontrado")
-
 
     async def update_product(self, body):
         id_product = body["id"]
@@ -64,7 +61,6 @@ class ProductRepository:
         except Exception:
             return return_pretty_message(error="falha ao atualizar")
 
-
     async def remove_product(self, body):
         id_product = body["id"]
         product = await self.list_by_id(id_product)
@@ -74,7 +70,7 @@ class ProductRepository:
             if not "_id" in product_object:
                 return return_pretty_message(error=f"produto id:{id_product} não encontrado")
             else:
-                self.mongoObject.delete_data(id_product)
+                await self.mongoObject.delete_data(id_product)
                 return return_pretty_message(success="ok", id_excluido=id_product)
         except Exception:
             return return_pretty_message(error="falha ao excluir")

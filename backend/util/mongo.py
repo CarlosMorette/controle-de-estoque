@@ -1,6 +1,7 @@
 from util.general import return_pretty_message
 from bson import ObjectId
 
+
 class MongoFunctions:
 
     def __init__(self, db, collection):
@@ -20,8 +21,8 @@ class MongoFunctions:
             "_id": ObjectId(id)
         })
 
-    def insert_data(self, data):
-        self.collection.insert_one(data)
+    async def insert_data(self, data):
+        return await self.collection.insert_one(data)
 
     def update_data(self, **kwargs):
         _id = kwargs["id"]
@@ -35,7 +36,7 @@ class MongoFunctions:
             }
         )
 
-    def delete_data(self, _id):
-        self.collection.delete_one({
+    async def delete_data(self, _id):
+        await self.collection.delete_one({
             "_id": ObjectId(_id)
         })

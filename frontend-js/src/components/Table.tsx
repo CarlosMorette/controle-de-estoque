@@ -8,7 +8,7 @@ export default function Table(props: TableProps) {
     const createColumns = (props.columns.map((c, i) => <th key={i}>{c}</th>))
     const tdAction = <td 
         className={styles.action}
-        onClick={() => props.action(true)}    
+        onClick={() => props.modal(true)}    
     >Action</td>
 
     const createBody = (
