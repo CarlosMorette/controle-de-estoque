@@ -3,15 +3,16 @@ import Header from '../components/Header'
 import { Product } from '../constants/Interfaces'
 import { requestApi } from '../constants/Functions'
 import Table from '../components/Table'
+import { Modal } from '../components/Modal'
 
 export default function Home() {
 
     const [products, setProducts] = useState<Product[]>([])
     const [rowSelected, setRowSelected] = useState<Product | null>(null)
 
-    const createObjectData = (array: Product[]) => {
+    const createObjectData = async (array: Product[]) => {
         const newArray: Product | any = []
-        array.map(o => {
+        await array.map((o) => {
             const { name, price, validity, category } = o
             const newObject = {
                 name,
@@ -27,7 +28,7 @@ export default function Home() {
 
     const getProducts = async () => {
         const data = await requestApi("GET", "produto")
-        const arrayProducts = createObjectData(data)
+        const arrayProducts = await createObjectData(data)
         setProducts(arrayProducts)
     }
 
@@ -40,18 +41,18 @@ export default function Home() {
             <Header />
             <div>
                 <Table
-                    columns={["Nome", "Preço", "Validade", "Categoria"]}
+                    columns={["Ação", "Nome", "Preço", "Validade", "Categoria"]}
                     data={products}
-                    callback={(row: any) => {
-                        setRowSelected({ 
-                            name: row[0].textContent,
-                            price: row[1].textContent,
-                            validity: row[2].textContent,
-                            category: row[3].textContent,
+                    action={(e: any) => console.log(e)}
+                    rowDataSelected={(row: any) => {
+                        setRowSelected({
+                            name: row[1].innerText,
+                            price: row[2].innerText,
+                            validity: row[3].innerText,
+                            category: row[4].innerText,
                         })
-                        console.log(rowSelected)
                     }}
-                />
+                    />
             </div>
         </div>
     )

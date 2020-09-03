@@ -28,5 +28,6 @@ export interface InputProps {
 export interface TableProps {
     columns: Array<string>
     data: Array<Product>
-    callback?: any
+    rowDataSelected?: any
+    action?: any
 }
