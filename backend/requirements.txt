@@ -1,0 +1,17 @@
+astroid==2.4.2
+attrs==19.3.0
+autopep8==1.5.4
+dnspython==2.0.0
+isort==4.3.21
+jsonschema==3.2.0
+lazy-object-proxy==1.4.3
+mccabe==0.6.1
+motor==2.2.0
+pycodestyle==2.6.0
+pylint==2.5.3
+pymongo==3.11.0
+pyrsistent==0.16.0
+six==1.15.0
+toml==0.10.1
+tornado==6.0.4
+wrapt==1.12.1
