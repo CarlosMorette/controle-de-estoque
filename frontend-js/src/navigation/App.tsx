@@ -4,16 +4,16 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import { routesPages, notFound } from './Routes'
-import './../css/reset.css'
-
+import { pages, homePage, notFoundPage } from './Routes'
+import './reset.css'
 
 export default function App() {
   return (
     <Router>
         <Switch>
-          {routesPages.map((p, i) => <Route key={i} exact path={p.path} component={p.component} />)}
-          <Route component={notFound.component}/>
+          <Route exact component={homePage.component} path="/"/>
+          {pages.map((p, i) => <Route key={i} exact path={p.path} component={p.component} />)}
+          <Route component={notFoundPage.component}/>
         </Switch>
     </Router>
   );

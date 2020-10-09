@@ -18,17 +18,3 @@ export interface Product {
     | "leguminosas e oleaginosas"
     | "oleos e gorduras"
 }
-
-// Components
-export interface InputProps {
-    type: "text" | "password"
-    placeHolder: string
-}
-
-export interface TableProps {
-    columns: Array<string>
-    data: Array<Product>
-    rowDataSelected?: any
-    action?: boolean
-    modal: (modal: boolean) => void
-}
